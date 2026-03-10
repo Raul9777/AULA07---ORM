@@ -70,9 +70,66 @@ produto1 = Produto("Notebook", 5500, 6, True)
 produto2 = Produto("Teclado", 500, 100, True)
 
 #Adicionar os produtos no carrinho
-session.add(produto1)
-session.add(produto2)
+#session.add(produto1)
+#session.add(produto2)
 
 # Confirmar a inserção no banco
 #Salvar no banco de dados
+#session.commit()
+
+
+# Listar
+#Busca todos os produtos do banco
+produtos = session.query(Produto).all()
+
+print(produtos)
+
+for p in produtos:
+    print(f"id={p.id}, nome{p.nome}, preco{p.preco}, estoque{p.estoque}, ativo{p.ativo}")
+
+
+# UPDATE (Atualizar)
+
+#Buscar o produto com id = 1
+produto_id = session.query(Produto).filter(Produto.id == 1).first()
+print(produto_id)
+
+produto_estoque = session.query(Produto).filter(Produto.estoque >= 10).all()
+for produto in produto_estoque:
+    print(produto.estoque)
+
+
+
+produto_id2 = session.query(Produto).filter_by(id=1).first()
+print(produto_id2)
+
+# Podemos usar order by
+produtos_organizados = session.query(Produto).order_by(Produto.estoque).all()
+produtos_oranizados2 = session.query(Produto).order_by(Produto.estoque.desc()).all()
+for produto in produtos_organizados:
+    print(f"Nome: {produto.nome}, Qtd_estoque: {produto.estoque}")
+
+#Limitar a quantidade de resultado - Top 5 produtos mais caros
+produtos_mais_caros = session.query(Produto).order_by(Produto.preco.desc()).limit(3).all()
+for produto in produtos_mais_caros:
+    print(f"Nome: {produto.nome}, Valor: {produto.preco}")
+
+
+
+
+
+# Update - atualizar
+#Busquei o produto para atualizar
+notebook = session.query(Produto).filter_by(id = 1).first()
+notebook.preco = 6000
+
+#Confirmar essa autoreção
 session.commit()
+print("Preço atualizado com sucesso")
+
+produtos = session.query(Produto).all()
+
+
+for p in produtos:
+    print(f"id={p.id}, nome{p.nome}, preco{p.preco}, estoque{p.estoque}, ativo{p.ativo}")
+    
